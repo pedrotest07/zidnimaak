@@ -1,0 +1,863 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>زدني معاك - الإعلانات</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="SHORTCUT ICON" type="image/ico" href="fav.jpeg">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: {
+                            red: '#c1272d',
+                            green: '#006233'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Cairo', sans-serif;
+        }
+        .bg-grid-pattern {
+            background-image: linear-gradient(to right, rgba(0,0,0,0.1) 1px, transparent 1px),
+                            linear-gradient(to bottom, rgba(0,0,0,0.1) 1px, transparent 1px);
+            background-size: 20px 20px;
+        }
+        .announcement-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            padding: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        /* Responsive design */
+        @media (max-width: 1024px) {
+            .announcement-grid {
+                grid-template-columns: repeat(2, 1fr);
+                padding: 1.5rem;
+            }
+        }
+        
+        @media (max-width: 640px) {
+            .announcement-grid {
+                grid-template-columns: 1fr;
+                padding: 1rem;
+            }
+        }
+
+        .announcement-card {
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 1rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 0 20px rgba(0, 0, 0, 0.05);
+            overflow: hidden;
+            transition: all 0.3s ease;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            border: 1px solid rgba(255, 255, 255, 0.5);
+        }
+
+        .announcement-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 20px rgba(0, 0, 0, 0.15);
+            border-color: rgba(34, 197, 94, 0.3);
+        }
+
+        .announcement-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .announcement-content {
+            padding: 1.5rem;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .announcement-title {
+            font-size: 1.25rem;
+            font-weight: bold;
+            color: #1a202c;
+            margin-bottom: 0.5rem;
+            line-height: 1.4;
+        }
+
+        .announcement-price {
+            color: #c1272d;
+            font-weight: bold;
+            font-size: 1.25rem;
+            margin-bottom: 1rem;
+        }
+
+        .announcement-description {
+            color: #4a5568;
+            margin-bottom: 1rem;
+            flex-grow: 1;
+        }
+
+        .announcement-footer {
+            margin-top: auto;
+        }
+
+        /* Responsive text */
+        @media (max-width: 640px) {
+            .announcement-title {
+                font-size: 1.1rem;
+            }
+            .announcement-price {
+                font-size: 1.1rem;
+            }
+            .announcement-description {
+                font-size: 0.9rem;
+            }
+        }
+
+        /* Style pour le fond */
+        html, body {
+            background: white;
+        }
+
+        /* Ajustement de la vague */
+        .wave-container svg path {
+            fill: white;
+        }
+
+        .section-transition {
+            background: linear-gradient(to bottom, transparent, white);
+        }
+
+        /* Section des annonces */
+        .announcements-section {
+            background: transparent;
+            padding-top: 3rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        .announcements-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 100px;
+            background: linear-gradient(180deg, rgba(255,255,255,0.9) 0%, rgba(255,255,255,0) 100%);
+        }
+
+        /* Style de fond pour toute la page */
+        html {
+            min-height: 100%;
+            background: white;  
+        }
+        
+        body {
+            min-height: 100vh;
+            background: white;
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+
+        .hero-animate-in {
+            animation: fadeInUp 0.6s ease-out forwards;
+        }
+
+        .float-animation {
+            animation: float 3s ease-in-out infinite;
+        }
+
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        /* Style pour la navigation */
+        .nav-blur {
+            background: rgba(255, 255, 255, 0.7);
+            transition: all 0.3s ease;
+        }
+
+        .nav-blur:hover {
+            background: rgba(255, 255, 255, 0.8);
+        }
+
+        /* Style pour la vague et la transition */
+        .wave-container {
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 100%;
+            overflow: hidden;
+            line-height: 0;
+        }
+
+        .wave-container svg {
+            position: relative;
+            display: block;
+            width: calc(100% + 1.3px);
+            height: 110px;
+        }
+
+        .wave-shape {
+            fill: url(#wave-gradient);
+        }
+
+        /* Style pour le menu mobile */
+        .mobile-menu {
+            display: none;
+        }
+
+        .mobile-menu.active {
+            display: block;
+        }
+
+        .mobile-menu-button {
+            cursor: pointer;
+            padding: 0.5rem;
+            border-radius: 0.375rem;
+            transition: background-color 0.2s;
+        }
+
+        .mobile-menu-button:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        @media (max-width: 768px) {
+            .mobile-menu.active {
+                position: absolute;
+                top: 100%;
+                right: 0;
+                left: 0;
+                background: rgba(255, 255, 255, 0.95);
+                padding: 1rem;
+                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            }
+
+            .mobile-menu.active a {
+                display: block;
+                padding: 0.75rem 1rem;
+                color: #4a5568;
+                font-size: 1rem;
+                transition: all 0.2s;
+            }
+
+            .mobile-menu.active a:hover {
+                background: rgba(34, 197, 94, 0.1);
+                color: #22c55e;
+            }
+        }
+
+        /* Style amélioré pour les cartes du hero */
+        .hero-card {
+            background: rgba(255, 255, 255, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .hero-card:hover {
+            background: rgba(255, 255, 255, 0.2);
+            border-color: rgba(255, 255, 255, 0.4);
+            transform: translateY(-2px);
+        }
+
+        .hero-card-icon {
+            width: 4rem;
+            height: 4rem;
+            background: linear-gradient(135deg, #c1272d, #006233);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem;
+        }
+
+        .hero-card-icon i {
+            font-size: 1.5rem;
+            color: white;
+        }
+
+        .hero-card h3 {
+            color: white;
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .hero-card p {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 1rem;
+        }
+
+        /* Ajustements responsive */
+        @media (max-width: 768px) {
+            .hero-grid {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+                padding: 0 1rem;
+            }
+
+            .hero-card {
+                background: rgba(255, 255, 255, 0.2);
+                margin-bottom: 1rem;
+            }
+
+            .hero-card h3 {
+                font-size: 1.2rem;
+                text-align: center;
+            }
+
+            .hero-card p {
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Navbar -->
+    <nav class="bg-white shadow-lg fixed w-full top-0 z-50">
+        <div class="max-w-7xl mx-auto px-2">
+            <div class="flex justify-between items-center h-16">
+                <!-- Logo -->
+                <div class="flex-shrink-0 flex items-center">
+                    
+                    <a href="index.html" ><img  src="fav.jpeg" alt="Logo" class="h-12 w-12 ml-2"></a>
+                    <a href="index.html" class="text-2xl font-bold text-red-600">زدني معاك</a>
+                </div>
+                
+                <!-- Menu mobile -->
+                <div class="md:hidden">
+                    <button type="button" class="mobile-menu-button p-2 rounded-md text-gray-700 hover:text-gray-900 focus:outline-none">
+                        <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                        </svg>
+                    </button>
+                </div>
+
+                <!-- Menu desktop -->
+                <div class="hidden md:flex md:items-center md:space-x-4">
+                    <a href="#search" class="text-gray-700 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium">بحث</a>
+                    <a href="#about" class="text-gray-700 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium">من نحن</a>
+                    <a href="#contact" class="text-gray-700 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium">اتصل بنا</a>
+                    <a href="annonces.html" class="text-gray-700 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium">Français</a>
+                    <div class="auth-buttons">
+                        <a href="#" class="bg-primary-red text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-red-700 mx-2" onclick="openAuthModal()">تسجيل الدخول</a>
+                        <a href="#" class="bg-primary-green text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-green-700" onclick="openAuthModal('register')">إنشاء حساب</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Menu mobile déroulant -->
+        <div class="md:hidden hidden" id="mobile-menu">
+            <div class="px-2 pt-2 pb-3 space-y-1">
+                <a href="#search" class="block text-gray-700 hover:text-gray-900 px-3 py-2 rounded-md text-base font-medium">بحث</a>
+                <a href="#about" class="block text-gray-700 hover:text-gray-900 px-3 py-2 rounded-md text-base font-medium">من نحن</a>
+                <a href="#contact" class="block text-gray-700 hover:text-gray-900 px-3 py-2 rounded-md text-base font-medium">اتصل بنا</a>
+                <a href="annonces.html" class="block text-gray-700 hover:text-gray-900 px-3 py-2 rounded-md text-base font-medium">Français</a>
+                <a href="#" class="block bg-primary-red text-white px-4 py-2 rounded-md text-base font-medium hover:bg-red-700 my-2" onclick="openAuthModal()">تسجيل الدخول</a>
+                <a href="#" class="block bg-primary-green text-white px-4 py-2 rounded-md text-base font-medium hover:bg-green-700" onclick="openAuthModal('register')">إنشاء حساب</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Modal d'authentification -->
+    <div id="authModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50 p-4">
+        <div class="bg-white rounded-2xl p-8 max-w-md w-full mx-auto transform transition-all duration-300 scale-95 opacity-0" id="modalContent">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-3xl font-bold bg-gradient-to-r from-red-600 to-red-800 bg-clip-text text-transparent" id="modalTitle">تسجيل الدخول</h2>
+                <button class="text-gray-400 hover:text-gray-600 transition-colors" onclick="closeAuthModal()">
+                    <i class="fas fa-times text-xl"></i>
+                </button>
+            </div>
+            <!-- Formulaire de connexion -->
+            <form id="loginForm" class="space-y-6">
+                <div class="space-y-2">
+                    <label class="block text-gray-700 font-medium">البريد الإلكتروني</label>
+                    <input type="email" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500 transition-colors" placeholder="بريدك الإلكتروني" required>
+                </div>
+                <div class="space-y-2">
+                    <label class="block text-gray-700 font-medium">كلمة المرور</label>
+                    <div class="relative">
+                        <input type="password" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500 transition-colors" placeholder="كلمة المرور" required>
+                        <button type="button" class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700" onclick="togglePassword(this)">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="flex items-center justify-between text-sm">
+                    <label class="flex items-center text-gray-600">
+                        <input type="checkbox" class="ml-2">
+                        تذكرني
+                    </label>
+                    <a href="#" class="text-red-600 hover:text-red-700">نسيت كلمة المرور؟</a>
+                </div>
+                <button type="submit" class="w-full py-3 bg-primary-red text-white rounded-lg hover:bg-red-700 transition-colors">
+                    تسجيل الدخول
+                </button>
+                <p class="text-center text-gray-600">
+                    ليس لديك حساب؟
+                    <a href="#" class="text-red-600 hover:text-red-700" onclick="switchTab('register')">إنشاء حساب</a>
+                </p>
+            </form>
+            <!-- Formulaire d'inscription -->
+            <form id="registerForm" class="space-y-6 hidden">
+                <div class="space-y-2">
+                    <label class="block text-gray-700 font-medium">الاسم الكامل</label>
+                    <input type="text" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500 transition-colors" placeholder="اسمك الكامل" required>
+                </div>
+                <div class="space-y-2">
+                    <label class="block text-gray-700 font-medium">البريد الإلكتروني</label>
+                    <input type="email" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500 transition-colors" placeholder="بريدك الإلكتروني" required>
+                </div>
+                <div class="space-y-2">
+                    <label class="block text-gray-700 font-medium">كلمة المرور</label>
+                    <div class="relative">
+                        <input type="password" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500 transition-colors" placeholder="كلمة المرور" required>
+                        <button type="button" class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700" onclick="togglePassword(this)">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="space-y-2">
+                    <label class="block text-gray-700 font-medium">تأكيد كلمة المرور</label>
+                    <div class="relative">
+                        <input type="password" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500 transition-colors" placeholder="تأكيد كلمة المرور" required>
+                        <button type="button" class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700" onclick="togglePassword(this)">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                    </div>
+                </div>
+                <button type="submit" class="w-full py-3 bg-primary-green text-white rounded-lg hover:bg-green-700 transition-colors">
+                    إنشاء حساب
+                </button>
+                <p class="text-center text-gray-600">
+                    لديك حساب؟
+                    <a href="#" class="text-red-600 hover:text-red-700" onclick="switchTab('login')">تسجيل الدخول</a>
+                </p>
+            </form>
+        </div>
+    </div>
+
+    <!-- Section Hero -->
+    <div class="relative min-h-[500px] bg-gradient-to-r from-primary-red via-primary-green to-green-600 overflow-hidden">
+        <!-- Fond avec dégradé -->
+        <div class="absolute inset-0 bg-gradient-to-br from-primary-red via-primary-green to-green-600 opacity-80"></div>
+        
+        <!-- Overlay dégradé pour adoucir -->
+        <div class="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-[rgba(34,197,94,0.1)]"></div>
+
+        <!-- Contenu du hero -->
+        <div class="relative max-w-7xl mx-auto px-4 py-12 sm:py-20">
+            <div class="text-center mb-12 hero-animate-in">
+                <h1 class="text-4xl sm:text-6xl font-extrabold text-white mb-6 leading-tight">
+                    ابحث عن <span class="text-green-300">سكنك المثالي</span>
+                </h1>
+                <p class="text-xl text-white/90 max-w-2xl mx-auto mb-12">
+                    اكتشف مجموعة حصرية من العروض التي تناسب معاييرك
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 hero-grid">
+                <!-- Ville -->
+                <div class="hero-card">
+                    <div class="hero-card-icon float-animation">
+                        <i class="fas fa-map-marker-alt"></i>
+                    </div>
+                    <h3 id="cityDisplay">-</h3>
+                    <p>المدينة</p>
+                </div>
+
+                <!-- Type de logement -->
+                <div class="hero-card">
+                    <div class="hero-card-icon float-animation">
+                        <i class="fas fa-home"></i>
+                    </div>
+                    <h3 id="typeDisplay">-</h3>
+                    <p>نوع السكن</p>
+                </div>
+
+                <!-- Budget -->
+                <div class="hero-card">
+                    <div class="hero-card-icon float-animation">
+                        <i class="fas fa-money-bill-wave"></i>
+                    </div>
+                    <h3 id="budgetDisplay">-</h3>
+                    <p>الميزانية القصوى</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Nouvelle transition vers la vague -->
+        <div class="absolute bottom-0 left-0 w-full">
+            <!-- Dégradé de transition -->
+            <div class="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-b from-transparent to-white opacity-90"></div>
+            
+            <!-- Vague -->
+            <svg class="relative z-10" viewBox="0 0 1440 120" preserveAspectRatio="none">
+                <path fill="white" fill-opacity="1" d="M0,32L60,53.3C120,75,240,117,360,122.7C480,128,600,96,720,80C840,64,960,64,1080,69.3C1200,75,1320,85,1380,90.7L1440,96L1440,120L1380,120C1320,120,1200,120,1080,120C960,120,840,120,720,120C600,120,480,120,360,120C240,120,120,120,60,120L0,120Z"></path>
+            </svg>
+        </div>
+    </div>
+
+    <!-- Contenu principal -->
+    <div class="pt-16">
+        <!-- Section des annonces avec fond transparent -->
+        <div class="announcements-section pt-16">
+            <div class="container mx-auto px-4">
+                <div class="announcement-grid" id="annoncesContainer">
+                    <!-- Les annonces seront injectées ici -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white py-16">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <div>
+                    <a href="#" class="text-2xl font-bold mb-4 block">زدني معاك</a>
+                    <p class="text-gray-400 mb-6">منصتك الموثوقة للعثور على شركاء السكن في المغرب</p>
+                    <div class="flex space-x-reverse space-x-4">
+                        <a href="#" class="w-10 h-10 bg-primary-red rounded-full flex items-center justify-center hover:-translate-y-1 transition-transform duration-300">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 bg-primary-red rounded-full flex items-center justify-center hover:-translate-y-1 transition-transform duration-300">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 bg-primary-red rounded-full flex items-center justify-center hover:-translate-y-1 transition-transform duration-300">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 bg-primary-red rounded-full flex items-center justify-center hover:-translate-y-1 transition-transform duration-300">
+                            <i class="fab fa-linkedin-in"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <div>
+                    <h3 class="text-xl font-bold text-primary-red mb-4">روابط سريعة</h3>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-400 hover:text-white transition">الرئيسية</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition">البحث</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition">كيف يعمل</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition">نشر إعلان</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h3 class="text-xl font-bold text-primary-red mb-4">المساعدة والدعم</h3>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-400 hover:text-white transition">مركز المساعدة</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition">الأسئلة الشائعة</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition">شروط الاستخدام</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition">سياسة الخصوصية</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h3 class="text-xl font-bold text-primary-red mb-4">اتصل بنا</h3>
+                    <ul class="space-y-2">
+                        <li class="text-gray-400"><i class="fas fa-phone ml-2"></i>+212 5XX-XXXXXX</li>
+                        <li class="text-gray-400"><i class="fas fa-envelope ml-2"></i>contact@zidnim3ak.ma</li>
+                        <li class="text-gray-400"><i class="fas fa-map-marker-alt ml-2"></i>الراشيدية، المغرب</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="border-t border-gray-800 mt-12 pt-8 text-center">
+                <p class="text-gray-400"> 2025 زدني معاك. جميع الحقوق محفوظة.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Toggle menu mobile
+        const mobileMenuButton = document.querySelector('.mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+
+        mobileMenuButton.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        // Fonctions pour la modal d'authentification
+        function openAuthModal(tab = 'login') {
+            const modal = document.getElementById('authModal');
+            const modalContent = document.getElementById('modalContent');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            setTimeout(() => {
+                modalContent.classList.remove('scale-95', 'opacity-0');
+                modalContent.classList.add('scale-100', 'opacity-100');
+            }, 10);
+            switchTab(tab);
+        }
+
+        function closeAuthModal() {
+            const modal = document.getElementById('authModal');
+            const modalContent = document.getElementById('modalContent');
+            modalContent.classList.remove('scale-100', 'opacity-100');
+            modalContent.classList.add('scale-95', 'opacity-0');
+            setTimeout(() => {
+                modal.classList.remove('flex');
+                modal.classList.add('hidden');
+            }, 300);
+        }
+
+        function togglePassword(button) {
+            const input = button.parentElement.querySelector('input');
+            const icon = button.querySelector('i');
+            if (input.type === 'password') {
+                input.type = 'text';
+                icon.classList.remove('fa-eye');
+                icon.classList.add('fa-eye-slash');
+            } else {
+                input.type = 'password';
+                icon.classList.remove('fa-eye-slash');
+                icon.classList.add('fa-eye');
+            }
+        }
+
+        function switchTab(tab) {
+            const loginForm = document.getElementById('loginForm');
+            const registerForm = document.getElementById('registerForm');
+            const modalTitle = document.getElementById('modalTitle');
+
+            if (tab === 'login') {
+                loginForm.classList.remove('hidden');
+                registerForm.classList.add('hidden');
+                modalTitle.textContent = 'تسجيل الدخول';
+            } else {
+                loginForm.classList.add('hidden');
+                registerForm.classList.remove('hidden');
+                modalTitle.textContent = 'إنشاء حساب';
+            }
+        }
+
+        // Fermer la modal en cliquant en dehors
+        document.getElementById('authModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeAuthModal();
+            }
+        });
+
+        // Fonction de déconnexion
+        function logout() {
+            localStorage.removeItem('isLoggedIn');
+            window.location.reload();
+        }
+
+        // Base de données d'annonces
+        const allAnnouncements = {
+            casablanca: {
+                appartement: [
+                    {
+                        title: "شقة حديثة في وسط المدينة",
+                        description: "شقة جميلة من 3 غرف، تم تجديدها بالكامل، تقع في قلب المدينة",
+                        price: 2500,
+                        location: "وسط المدينة",
+                        image: "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267"
+                    },
+                    {
+                        title: "استوديو مفروش في المعاريف",
+                        description: "استوديو عصري ومجهز، مثالي للطلاب أو المهنيين الشباب",
+                        price: 1800,
+                        location: "المعاريف",
+                        image: "https://images.unsplash.com/photo-1554995207-c18c203602cb"
+                    }
+                ],
+                villa: [
+                    {
+                        title: "فيلا فاخرة مع مسبح",
+                        description: "فيلا رائعة مع حديقة ومسبح خاص",
+                        price: 5000,
+                        location: "كاليفورنيا",
+                        image: "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688"
+                    }
+                ]
+            }
+        };
+
+        // Array of different real estate images
+        const propertyImages = [
+            "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267", // Modern apartment
+            "https://images.unsplash.com/photo-1560448204-e02f11c3d0e2", // Luxury villa
+            "https://images.unsplash.com/photo-1512917774080-9991f1c4c750", // Modern house
+            "https://images.unsplash.com/photo-1574362848149-11496d93a7c7", // Cozy studio
+            "https://images.unsplash.com/photo-1493809842364-78817add7ffb", // Contemporary apartment
+            "https://images.unsplash.com/photo-1580587771525-78b9dba3b914"  // Elegant villa
+        ];
+
+        function displayAnnouncements() {
+            const container = document.getElementById('annoncesContainer');
+            if (!container) {
+                console.error("Container not found");
+                return;
+            }
+
+            // Récupérer les critères de recherche
+            const city = localStorage.getItem('searchCity');
+            const budget = parseInt(localStorage.getItem('searchBudget')) || Infinity;
+            const housingType = localStorage.getItem('searchHousingType');
+
+            // Traductions en arabe
+            const cityTranslations = {
+                'casablanca': 'الدار البيضاء',
+                'rabat': 'الرباط',
+                'marrakech': 'مراكش',
+                'tanger': 'طنجة',
+                'agadir': 'أكادير'
+            };
+
+            const typeTranslations = {
+                'appartement': 'شقة',
+                'villa': 'فيلا',
+                'maison': 'منزل',
+                'studio': 'ستوديو',
+                'duplex': 'دوبلكس'
+            };
+
+            // Mettre à jour l'affichage des critères dans le hero avec traductions
+            document.getElementById('cityDisplay').textContent = city ? (cityTranslations[city.toLowerCase()] || city) : 'جميع المدن';
+            document.getElementById('typeDisplay').textContent = housingType ? (typeTranslations[housingType.toLowerCase()] || housingType) : 'جميع أنواع السكن';
+            document.getElementById('budgetDisplay').textContent = budget !== Infinity ? `${budget} درهم` : 'غير محدد';
+
+            // Créer un tableau des annonces correspondant aux critères
+            let matchingAnnouncements = [];
+
+            // Fonction pour vérifier si une annonce correspond aux critères
+            const matchesCriteria = (ann, type) => {
+                return (!city || ann.city === city.toLowerCase()) &&
+                       (!housingType || type === housingType.toLowerCase()) &&
+                       ann.price <= budget;
+            };
+
+            // Collecter toutes les annonces correspondant aux critères
+            Object.entries(allAnnouncements).forEach(([cityName, cityData]) => {
+                Object.entries(cityData).forEach(([type, announcements]) => {
+                    const filteredAnnouncements = announcements.filter(ann => matchesCriteria(ann, type));
+                    matchingAnnouncements.push(...filteredAnnouncements.map(ann => ({
+                        ...ann,
+                        city: cityName,
+                        type: type
+                    })));
+                });
+            });
+
+            // Si aucune annonce ne correspond aux critères
+            if (matchingAnnouncements.length === 0) {
+                // Créer des annonces similaires avec des prix respectant le budget
+                const maxPrice = budget === Infinity ? 3000 : budget;
+                for (let i = 1; i <= 6; i++) {
+                    const price = Math.round(maxPrice * (0.6 + (Math.random() * 0.3))); // Prix entre 60% et 90% du budget
+                    const cityArabic = city ? (cityTranslations[city.toLowerCase()] || city) : 'المغرب';
+                    const typeArabic = housingType ? (typeTranslations[housingType.toLowerCase()] || housingType) : 'سكن';
+                    matchingAnnouncements.push({
+                        title: `${typeArabic} في ${cityArabic}`,
+                        description: `${typeArabic} مثالي مع نسبة جيدة بين الجودة والسعر`,
+                        price: price,
+                        location: cityArabic,
+                        image: propertyImages[i - 1], // Use a different image for each announcement
+                        type: typeArabic,
+                        city: cityArabic
+                    });
+                }
+            }
+
+            // Vider et recréer le conteneur des annonces
+            container.innerHTML = '';
+
+            // Afficher les annonces
+            matchingAnnouncements.forEach(ann => {
+                const cityArabic = cityTranslations[ann.city] || ann.city;
+                const typeArabic = typeTranslations[ann.type] || ann.type;
+                
+                const card = document.createElement('div');
+                card.className = 'announcement-card';
+                card.innerHTML = `
+                    <img src="${ann.image}" alt="${ann.title}" class="announcement-image">
+                    <div class="announcement-content">
+                        <h3 class="announcement-title">${ann.title}</h3>
+                        <div class="announcement-price">${ann.price} درهم</div>
+                        <p class="announcement-description">${ann.description}</p>
+                        <div class="announcement-footer">
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center">
+                                    <i class="fas fa-map-marker-alt text-primary-red ml-2"></i>
+                                    <span class="text-gray-600">${cityArabic}</span>
+                                </div>
+                                <span class="px-3 py-1 bg-primary-green/10 text-primary-green rounded-full text-sm">
+                                    ${typeArabic}
+                                </span>
+                            </div>
+                            <a href="#" class="mt-4 block w-full text-center bg-gradient-to-r from-primary-red to-primary-green text-white py-2 rounded-lg hover:from-red-600 hover:to-green-700 transition-all duration-300">
+                                عرض التفاصيل
+                            </a>
+                        </div>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        // Vérifier si l'utilisateur est connecté et afficher les annonces
+        window.addEventListener('DOMContentLoaded', function() {
+            const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+            if (isLoggedIn) {
+                displayAnnouncements();
+            } else {
+                window.location.href = 'annonces.html';
+            }
+        });
+
+        // Script pour le menu mobile
+        document.addEventListener('DOMContentLoaded', function() {
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+
+            mobileMenuButton.addEventListener('click', function() {
+                mobileMenu.classList.toggle('active');
+                // Change l'icône du bouton
+                const icon = this.querySelector('i');
+                if (mobileMenu.classList.contains('active')) {
+                    icon.classList.remove('fa-bars');
+                    icon.classList.add('fa-times');
+                } else {
+                    icon.classList.remove('fa-times');
+                    icon.classList.add('fa-bars');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
